@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
+import android.widget.ToggleButton;
 
 
 public class ContacctActivity extends AppCompatActivity {
@@ -16,6 +20,9 @@ public class ContacctActivity extends AppCompatActivity {
         initListButton(); // initializes the imageButton so that it can be clicked
         initMapButton();
         initSettingsButton();
+        initToggleButton();
+        setForEditing(false);
+
     }
 
     private void initListButton() {
@@ -50,5 +57,50 @@ public class ContacctActivity extends AppCompatActivity {
                 startActivity(intent); // executes the intent
             }
         });
+    }
+
+    private void initToggleButton() {
+        final ToggleButton editToggle = (ToggleButton) findViewById(R.id.toggleButtonEdit);
+        editToggle.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+               setForEditing(editToggle.isChecked());
+            }
+        });
+    }
+
+    private void setForEditing(boolean enabled) {
+        EditText editName = (EditText) findViewById(R.id.editName);
+        EditText editAddress = (EditText) findViewById(R.id.editAddress);
+        EditText editCity = (EditText) findViewById(R.id.editCity);
+        EditText editState = (EditText) findViewById(R.id.editState);
+        EditText editZipCode = (EditText) findViewById(R.id.editZipcode);
+        EditText editPhone = (EditText) findViewById(R.id.editHome);
+        EditText editCell = (EditText) findViewById(R.id.editCell);
+        EditText editEmail = (EditText) findViewById(R.id.editEMail);
+        Button buttonChange = (Button) findViewById(R.id.btnBirthday);
+        Button buttonSave = (Button) findViewById(R.id.buttonSave);
+
+        editName.setEnabled(enabled);
+        editAddress.setEnabled(enabled);
+        editCity.setEnabled(enabled);
+        editState.setEnabled(enabled);
+        editZipCode.setEnabled(enabled);
+        editPhone.setEnabled(enabled);
+        editCell.setEnabled(enabled);
+        editEmail.setEnabled(enabled);
+        buttonSave.setEnabled(enabled);
+        buttonChange.setEnabled(enabled);
+
+        if (enabled) {
+            editName.requestFocus();
+        }
+        else {
+            ScrollView s = (ScrollView) findViewById(R.id.scrollView);
+            s.clearFocus();
+        }
+
+
     }
 }
