@@ -1,6 +1,7 @@
 package com.example.garrett.mycontactlist;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import java.text.DateFormat;
+import android.text.format.DateFormat;
 import java.util.Calendar;
 
 
@@ -25,6 +26,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         initSettingsButton();
         initToggleButton();
         setForEditing(false);
+        initChangeDateButton();
 
     }
 
@@ -110,8 +112,19 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
     @Override
     public void didFinishDatePickerDialog(Calendar selectedTime) {
         TextView birthDay = (TextView) findViewById(R.id.textBirthday);
-/*
-        birthDay.setText(DateFormat.format("MM/dd/yyyy", selectedTime.getTimeInMillis()).ToString());
-*/
+        birthDay.setText(DateFormat.format("MM/dd/yyyy", selectedTime.getTimeInMillis()).toString());
+
+    }
+
+    private void initChangeDateButton() {
+        Button changeDate = (Button) findViewById(R.id.btnBirthday);
+        changeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getSupportFragmentManager();
+                DatePickerDialog datePickerDialog = new DatePickerDialog();
+                datePickerDialog.show(fm, "Date Pick");
+            }
+        });
     }
 }
