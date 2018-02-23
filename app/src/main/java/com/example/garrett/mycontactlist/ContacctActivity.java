@@ -8,10 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.ToggleButton;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 
-public class ContacctActivity extends AppCompatActivity {
+public class ContacctActivity extends AppCompatActivity implements DatePickerDialog.SaveDateListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,5 +105,13 @@ public class ContacctActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    public void didFinishDatePickerDialog(Calendar selectedTime) {
+        TextView birthDay = (TextView) findViewById(R.id.textBirthday);
+/*
+        birthDay.setText(DateFormat.format("MM/dd/yyyy", selectedTime.getTimeInMillis()).ToString());
+*/
     }
 }
