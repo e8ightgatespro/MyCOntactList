@@ -198,10 +198,65 @@
                 android:ems="7"
                 android:maxLength="14"
                 android:imeOptions="actionNext"
-                android:inputType="phone">
-                <!--android:nextFocusDown="@id/editEmail"-->
+                android:inputType="phone"
+                android:nextFocusDown="@id/editEMail">
             </EditText>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textEMail"
+                android:text="E-Mail Address:"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/editHome" />
+
+            <EditText
+                android:id="@+id/editEMail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_below="@id/textEMail"
+                android:ems="13"
+                android:inputType="textEmailAddress"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textBday"
+                android:text="Birthday:"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/editEMail"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textBirthday"
+                android:text="01/01/1970"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/textBday"
+                android:layout_toEndOf="@id/textBday"
+                android:layout_alignBottom="@id/textBday"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnBirthday"
+                android:text="Change"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignBaseline="@id/textBirthday"/>
 
         </RelativeLayout>
     </ScrollView>

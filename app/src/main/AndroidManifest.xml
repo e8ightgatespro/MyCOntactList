@@ -12,7 +12,12 @@
         <activity android:name=".ContactListActivity" />
         <activity android:name=".ContactMapActivity" />
         <activity android:name=".ContactSettingsActivity" />
-        <activity android:name=".ContacctActivity"></activity>
+        <activity android:name=".ContacctActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
