@@ -4,6 +4,7 @@ package com.example.garrett.mycontactlist;
 import android.content.ContentValues;
 import android.content.Context;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -88,5 +89,25 @@ public class ContactDataSource {
         }
 
         return lastId;
+    }
+
+    public ArrayList<String> getContactName() {
+        ArrayList<String> contactNames = new ArrayList<>();
+        try {
+            String query = "Select contactname from contact";
+            Cursor cursor = database.rawQuery(query,null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                contactNames.add(cursor.getString(0));
+                cursor.moveToNext();
+            }
+            cursor.close();
+
+        }
+        catch(Exception e) {
+            contactNames = new ArrayList<String>();
+        }
+
+        return contactNames;
     }
 }
