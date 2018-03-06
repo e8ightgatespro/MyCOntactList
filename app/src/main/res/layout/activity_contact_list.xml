@@ -47,4 +47,13 @@
             android:layout_toRightOf="@+id/ImageButtonMap"
             app:srcCompat="@drawable/settingsicon" />
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lvContacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/navbar" />
 </RelativeLayout>
