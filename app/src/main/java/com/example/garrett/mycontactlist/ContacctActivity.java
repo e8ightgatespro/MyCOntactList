@@ -1,5 +1,6 @@
 package com.example.garrett.mycontactlist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,8 +36,61 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         initChangeDateButton();
         currentContact = new Contact();
         initTextChangedEvents();
+        initSaveButton();
     }
 
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        EditText editName = (EditText) findViewById(R.id.editName);
+        imm.hideSoftInputFromWindow(editName.getWindowToken(), 0);
+        EditText editAddress = (EditText) findViewById(R.id.editAddress);
+        imm.hideSoftInputFromWindow(editAddress.getWindowToken(), 0);
+        EditText editCity = (EditText) findViewById(R.id.editCity);
+        imm.hideSoftInputFromWindow(editCity.getWindowToken(), 0);
+        EditText editState = (EditText) findViewById(R.id.editState);
+        imm.hideSoftInputFromWindow(editState.getWindowToken(), 0);
+        EditText editZipcode = (EditText) findViewById(R.id.editZipcode);
+        imm.hideSoftInputFromWindow(editZipcode.getWindowToken(), 0);
+        EditText editPhonenumber = (EditText) findViewById(R.id.editHome);
+        imm.hideSoftInputFromWindow(editPhonenumber.getWindowToken(), 0);
+        EditText editCellnumber = (EditText) findViewById(R.id.editCell);
+        imm.hideSoftInputFromWindow(editCellnumber.getWindowToken(), 0);
+        EditText editEmail = (EditText) findViewById(R.id.editEMail);
+        imm.hideSoftInputFromWindow(editEmail.getWindowToken(), 0);
+    }
+
+    private void initSaveButton() {
+        Button saveButton = (Button) findViewById(R.id.buttonSave);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean wasSuccesful = false;
+                hideKeyboard();
+                ContactDataSource ds = new ContactDataSource(ContacctActivity.this);
+                try {
+
+                    ds.open();
+
+                    if(currentContact.getContactID() == -1) {
+                        wasSuccesful = ds.insertContact(currentContact);
+                    }
+                    else {
+                        wasSuccesful = ds.updateContact(currentContact);
+                    }
+                    ds.close();
+                }
+                catch(Exception e) {
+                    wasSuccesful = false;
+                }
+
+                if(wasSuccesful) {
+                    ToggleButton editToggle = (ToggleButton) findViewById(R.id.toggleButtonEdit);
+                    editToggle.toggle();
+                    setForEditing(false);
+                }
+            }
+        });
+    }
 
 
     private void initListButton() {
@@ -268,6 +323,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         }
         else {
             ScrollView s = (ScrollView) findViewById(R.id.scrollView);
+            s.fullScroll(ScrollView.FOCUS_UP);
             s.clearFocus();
         }
 
