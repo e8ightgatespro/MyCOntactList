@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -109,5 +110,39 @@ public class ContactDataSource {
         }
 
         return contactNames;
+    }
+
+    public ArrayList<Contact> getContacts() {
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+        try {
+            String query = "SELECT *FROM contact";
+            Cursor cursor = database.rawQuery(query,null);
+
+            Contact newContact;
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                newContact = new Contact();
+                newContact.setContactID(cursor.getInt(0));
+                newContact.setContactName(cursor.getString(1));
+                newContact.setStreetaddress(cursor.getString(2));
+                newContact.setCity(cursor.getString(3));
+                newContact.setState(cursor.getString(4));
+                newContact.setZipcode(cursor.getString(5));
+                newContact.setPhonenumber(cursor.getString(6));
+                newContact.setCellnumber(cursor.getString(7));
+                newContact.seteMail(cursor.getString(8));
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(Long.valueOf(cursor.getString(9)));
+                newContact.setBirthday(calendar);
+                contacts.add(newContact);
+                cursor.moveToNext();
+            }
+            cursor.close();
+
+        }
+        catch(Exception e) {
+            contacts = new ArrayList<Contact>();
+        }
+        return contacts;
     }
 }
