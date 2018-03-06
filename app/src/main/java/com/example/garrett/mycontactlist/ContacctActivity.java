@@ -73,6 +73,10 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
 
                     if(currentContact.getContactID() == -1) {
                         wasSuccesful = ds.insertContact(currentContact);
+                        if(wasSuccesful) {
+                            int newId = ds.getLastContactId();
+                            currentContact.setContactID(newId);
+                        }
                     }
                     else {
                         wasSuccesful = ds.updateContact(currentContact);
