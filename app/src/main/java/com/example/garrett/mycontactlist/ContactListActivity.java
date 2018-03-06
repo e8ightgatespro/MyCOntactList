@@ -15,6 +15,8 @@ import java.util.List;
 
 public class ContactListActivity extends AppCompatActivity {
 
+    ArrayList<Contact> contacts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +26,14 @@ public class ContactListActivity extends AppCompatActivity {
         initSettingsButton();
         initItemClick();
         ContactDataSource ds = new ContactDataSource(this);
-        ArrayList<String> names;
+
 
         try {
             ds.open();
-            names = ds.getContactName();
+            contacts = ds.getContacts();
             ds.close();
             ListView listView = (ListView) findViewById(R.id.lvContacts);
-            listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names));
+            listView.setAdapter(new ContactAdapter(this, contacts));
         }
         catch(Exception e) {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
@@ -42,8 +44,10 @@ public class ContactListActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.lvContacts);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
+                Contact selectedContact = contacts.get(position);
                 Intent intent = new Intent(ContactListActivity.this, ContacctActivity.class);
+                intent.putExtra("contactid", selectedContact.getContactID());
                 startActivity(intent);
             }
         });
