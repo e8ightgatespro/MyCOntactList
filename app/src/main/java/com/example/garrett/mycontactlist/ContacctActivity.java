@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,8 @@ import java.util.Calendar;
 
 public class ContacctActivity extends AppCompatActivity implements DatePickerDialog.SaveDateListener {
 
+    private Contact currentContact;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +31,11 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         initToggleButton();
         setForEditing(false);
         initChangeDateButton();
-
+        currentContact = new Contact();
+        initTextChangedEvents();
     }
+
+
 
     private void initListButton() {
         ImageButton ibList = (ImageButton) findViewById(R.id.ImageButtonList); //create a variable to hold the imageButton object
@@ -75,6 +82,27 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         });
     }
 
+    private void initTextChangedEvents() {
+        final EditText etContactName = (EditText) findViewById(R.id.editName);
+         etContactName.addTextChangedListener(new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+             }
+
+             @Override
+             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+             }
+
+             @Override
+             public void afterTextChanged(Editable editable) {
+                 currentContact.setContactName(etContactName.getText().toString());
+
+             }
+         });
+    }
+
     private void setForEditing(boolean enabled) {
         EditText editName = (EditText) findViewById(R.id.editName);
         EditText editAddress = (EditText) findViewById(R.id.editAddress);
@@ -113,7 +141,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
     public void didFinishDatePickerDialog(Calendar selectedTime) {
         TextView birthDay = (TextView) findViewById(R.id.textBirthday);
         birthDay.setText(DateFormat.format("MM/dd/yyyy", selectedTime.getTimeInMillis()).toString());
-
+        currentContact.setBirthday(selectedTime);
     }
 
     private void initChangeDateButton() {
