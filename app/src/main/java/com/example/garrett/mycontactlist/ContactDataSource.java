@@ -29,18 +29,18 @@ public class ContactDataSource {
     public boolean insertContact(Contact c) {
         boolean didSucceed = false;
         try {
-            ContentValues initalValues = new ContentValues();
-            initalValues.put("contactname", c.getContactName());
-            initalValues.put("streetaddress", c.getStreetaddress());
-            initalValues.put("city", c.getCity());
-            initalValues.put("state", c.getState());
-            initalValues.put("zipcode", c.getZipcode());
-            initalValues.put("phonenumber", c.getPhonenumber());
-            initalValues.put("cellnumber", c.getCellnumber());
-            initalValues.put("email", c.geteMail());
-            initalValues.put("birthday", String.valueOf(c.getBirthday().getTimeInMillis()));
+            ContentValues initialValues = new ContentValues();
+            initialValues.put("contactname", c.getContactName());
+            initialValues.put("streetaddress", c.getStreetaddress());
+            initialValues.put("city", c.getCity());
+            initialValues.put("state", c.getState());
+            initialValues.put("zipcode", c.getZipcode());
+            initialValues.put("phonenumber", c.getPhonenumber());
+            initialValues.put("cellnumber", c.getCellnumber());
+            initialValues.put("email", c.geteMail());
+            initialValues.put("birthday", String.valueOf(c.getBirthday().getTimeInMillis()));
 
-            didSucceed = database.insert("contact",null,initalValues) > 0;
+            didSucceed = database.insert("contact",null,initialValues) > 0;
         }
         catch(Exception e) {
             //Do nothing - will return false if there is an exception

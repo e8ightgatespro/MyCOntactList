@@ -163,7 +163,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
          });
 
         final EditText etContactStreetAddress = (EditText) findViewById(R.id.editAddress);
-        etContactName.addTextChangedListener(new TextWatcher() {
+        etContactStreetAddress.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -182,7 +182,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         });
 
         final EditText etContactCity = (EditText) findViewById(R.id.editCity);
-        etContactName.addTextChangedListener(new TextWatcher() {
+        etContactCity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -201,7 +201,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         });
 
         final EditText etContactState = (EditText) findViewById(R.id.editState);
-        etContactName.addTextChangedListener(new TextWatcher() {
+        etContactState.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -220,7 +220,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         });
 
         final EditText etContactZipcode = (EditText) findViewById(R.id.editZipcode);
-        etContactName.addTextChangedListener(new TextWatcher() {
+        etContactZipcode.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -239,7 +239,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         });
 
         final EditText etContactPhonenumber = (EditText) findViewById(R.id.editHome);
-        etContactName.addTextChangedListener(new TextWatcher() {
+        etContactPhonenumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -258,7 +258,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         });
 
         final EditText etContactCellnumber = (EditText) findViewById(R.id.editCell);
-        etContactName.addTextChangedListener(new TextWatcher() {
+        etContactCellnumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -277,7 +277,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         });
 
         final EditText etContactEmail = (EditText) findViewById(R.id.editEMail);
-        etContactName.addTextChangedListener(new TextWatcher() {
+        etContactEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
