@@ -30,6 +30,17 @@
         android:layout_below="@id/textContactName"
         android:text="Phone Number" />
 
+    <TextView
+        android:id="@+id/textCellnumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textContactName"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/textPhoneNumber"
+        android:layout_toRightOf="@+id/textPhoneNumber"
+        android:text="Cell Number" />
+
     <Button
         android:id="@+id/buttonDeleteContact"
         android:layout_width="wrap_content"
