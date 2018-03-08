@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactListActivity extends AppCompatActivity {
-
+    boolean isDeleting = false;
+    ContactAdapter adapter;
     ArrayList<Contact> contacts;
 
     @Override
@@ -28,6 +29,7 @@ public class ContactListActivity extends AppCompatActivity {
         initSettingsButton();
         initItemClick();
         initAddContactButton();
+        initDeleteButton();
         ContactDataSource ds = new ContactDataSource(this);
 
 
@@ -36,11 +38,30 @@ public class ContactListActivity extends AppCompatActivity {
             contacts = ds.getContacts();
             ds.close();
             ListView listView = (ListView) findViewById(R.id.lvContacts);
-            listView.setAdapter(new ContactAdapter(this, contacts));
+            adapter = new ContactAdapter(this, contacts);
+            listView.setAdapter(adapter);
         }
         catch(Exception e) {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void initDeleteButton() {
+        final Button deleteButton = findViewById(R.id.buttonDelete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isDeleting) {
+                    deleteButton.setText("Delete");
+                    isDeleting = false;
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    deleteButton.setText("Done Deleting");
+                    isDeleting = true;
+                }
+            }
+        });
     }
 
     private void initAddContactButton() {
@@ -60,9 +81,14 @@ public class ContactListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 Contact selectedContact = contacts.get(position);
-                Intent intent = new Intent(ContactListActivity.this, ContacctActivity.class);
-                intent.putExtra("contactid", selectedContact.getContactID());
-                startActivity(intent);
+                if(isDeleting) {
+                    adapter.showDelete(position, itemClicked, ContactListActivity.this, selectedContact);
+                }
+                else {
+                    Intent intent = new Intent(ContactListActivity.this, ContacctActivity.class);
+                    intent.putExtra("contactid", selectedContact.getContactID());
+                    startActivity(intent);
+                }
             }
         });
     }
