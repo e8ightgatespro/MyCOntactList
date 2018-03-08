@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.text.format.DateFormat;
 import java.util.Calendar;
@@ -32,11 +33,51 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         initMapButton();
         initSettingsButton();
         initToggleButton();
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            initContact(extras.getInt("contactid"));
+        }
+        else {
+            currentContact = new Contact();
+        }
         setForEditing(false);
         initChangeDateButton();
-        currentContact = new Contact();
         initTextChangedEvents();
         initSaveButton();
+        initContact(-1);
+    }
+
+    private void initContact(int id) {
+        ContactDataSource ds = new ContactDataSource(ContacctActivity.this);
+        try {
+            ds.open();
+            currentContact = ds.getSpecificContact(id);
+            ds.close();
+        }
+        catch(Exception e) {
+            Toast.makeText(this, "Load COntact Failed", Toast.LENGTH_LONG).show();
+        }
+
+        EditText editName = findViewById(R.id.editName);
+        EditText editAddress = findViewById(R.id.editAddress);
+        EditText editCity = findViewById(R.id.editCity);
+        EditText editState = findViewById(R.id.editState);
+        EditText editZipcode = findViewById(R.id.editZipcode);
+        EditText editPhonenumber = findViewById(R.id.editHome);
+        EditText editCellnumber = findViewById(R.id.editCell);
+        EditText editEmail = findViewById(R.id.editEMail);
+        TextView birthday = findViewById(R.id.textBirthday);
+
+        editName.setText(currentContact.getContactName());
+        editAddress.setText(currentContact.getStreetaddress());
+        editCity.setText(currentContact.getCity());
+        editState.setText(currentContact.getState());
+        editZipcode.setText(currentContact.getZipcode());
+        editPhonenumber.setText(currentContact.getPhonenumber());
+        editCellnumber.setText(currentContact.getCellnumber());
+        editEmail.setText(currentContact.geteMail());
+        birthday.setText(DateFormat.format("MM/dd/yyyy", currentContact.getBirthday()).toString());
+
     }
 
     private void hideKeyboard() {
