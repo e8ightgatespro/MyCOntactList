@@ -34,6 +34,7 @@ public class ContactListActivity extends AppCompatActivity {
 
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         String sortBy = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE).getString("sortfield", "contactname");
@@ -45,8 +46,8 @@ public class ContactListActivity extends AppCompatActivity {
             ds.open();
             contacts = ds.getContacts(sortBy, sortOrder);
             ds.close();
-            ListView listView = (ListView) findViewById(R.id.lvContacts);
             adapter = new ContactAdapter(this, contacts);
+            ListView listView = (ListView) findViewById(R.id.lvContacts);
             listView.setAdapter(adapter);
         }
         catch(Exception e) {

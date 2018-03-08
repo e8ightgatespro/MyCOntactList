@@ -44,7 +44,7 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
         initChangeDateButton();
         initTextChangedEvents();
         initSaveButton();
-        initContact(-1);
+        initContact(currentContact.getContactID());
     }
 
     private void initContact(int id) {
