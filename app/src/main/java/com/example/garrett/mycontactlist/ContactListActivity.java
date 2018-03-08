@@ -46,9 +46,15 @@ public class ContactListActivity extends AppCompatActivity {
             ds.open();
             contacts = ds.getContacts(sortBy, sortOrder);
             ds.close();
-            adapter = new ContactAdapter(this, contacts);
-            ListView listView = (ListView) findViewById(R.id.lvContacts);
-            listView.setAdapter(adapter);
+            if(contacts.size() > 0){
+                adapter = new ContactAdapter(this, contacts);
+                ListView listView = (ListView) findViewById(R.id.lvContacts);
+                listView.setAdapter(adapter);
+            }
+            else {
+                Intent intent = new Intent(ContactListActivity.this, ContacctActivity.class);
+                startActivity(intent);
+            }
         }
         catch(Exception e) {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
