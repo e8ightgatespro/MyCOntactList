@@ -1,5 +1,6 @@
 package com.example.garrett.mycontactlist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,12 +31,19 @@ public class ContactListActivity extends AppCompatActivity {
         initItemClick();
         initAddContactButton();
         initDeleteButton();
+
+    }
+
+    public void onResume() {
+        super.onResume();
+        String sortBy = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE).getString("sortfield", "contactname");
+        String sortOrder = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE).getString("sortorder", "ASC");
         ContactDataSource ds = new ContactDataSource(this);
 
 
         try {
             ds.open();
-            contacts = ds.getContacts();
+            contacts = ds.getContacts(sortBy, sortOrder);
             ds.close();
             ListView listView = (ListView) findViewById(R.id.lvContacts);
             adapter = new ContactAdapter(this, contacts);
