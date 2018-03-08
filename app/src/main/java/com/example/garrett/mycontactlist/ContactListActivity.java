@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ public class ContactListActivity extends AppCompatActivity {
         initMapButton();
         initSettingsButton();
         initItemClick();
+        initAddContactButton();
         ContactDataSource ds = new ContactDataSource(this);
 
 
@@ -39,6 +41,17 @@ public class ContactListActivity extends AppCompatActivity {
         catch(Exception e) {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void initAddContactButton() {
+        Button newContact = (Button) findViewById(R.id.buttonAdd);
+        newContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContactListActivity.this, ContacctActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initItemClick() {
