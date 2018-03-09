@@ -46,28 +46,31 @@
         android:layout_height="wrap_content"
 
         android:layout_centerVertical="true"
-        android:layout_marginLeft="53dp"
-        android:layout_marginStart="53dp"
-        android:layout_toEndOf="@+id/textContactName"
-        android:layout_toRightOf="@+id/textContactName"
+        android:layout_marginEnd="23dp"
+        android:layout_marginRight="23dp"
+        android:layout_toLeftOf="@+id/imageButton"
+        android:layout_toStartOf="@+id/imageButton"
         android:background="@color/system_transparent"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:text="Delete"
         android:textColor="@color/system_red"
         android:visibility="invisible" />
-<!--
-    <ImageButton
+
+    <ImageView
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textCellnumber"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         app:srcCompat="@android:drawable/arrow_down_float" />
-        This is a control so it takes precedence over the item click for the list view
-        The image button should have an attribute that stops the control from taking precedence over the list item
--->
+
+
 
 </RelativeLayout>
 
