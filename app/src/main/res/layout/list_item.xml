@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <TextView
@@ -16,9 +16,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/system_blue"
         android:text="Contact Name"
-        android:textSize="@dimen/text_size_large"/>
+        android:textColor="@color/system_blue"
+        android:textSize="@dimen/text_size_large" />
 
     <TextView
         android:id="@+id/textPhoneNumber"
@@ -26,9 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@id/textContactName"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
-        android:layout_below="@id/textContactName"
         android:text="Phone Number" />
 
     <TextView
@@ -44,27 +44,30 @@
         android:id="@+id/buttonDeleteContact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:textColor="@color/system_red"
+
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="53dp"
+        android:layout_marginStart="53dp"
+        android:layout_toEndOf="@+id/textContactName"
+        android:layout_toRightOf="@+id/textContactName"
         android:background="@color/system_transparent"
-        android:visibility="invisible"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:layout_alignTop="@id/textContactName"
-        android:layout_alignBottom="@id/textPhoneNumber"
-        android:text="Delete" />
-
+        android:text="Delete"
+        android:textColor="@color/system_red"
+        android:visibility="invisible" />
+<!--
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/buttonDeleteContact"
-        android:layout_toLeftOf="@+id/buttonDeleteContact"
-        android:layout_toStartOf="@+id/buttonDeleteContact"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        android:layout_above="@+id/textCellnumber"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+        This is a control so it takes precedence over the item click for the list view
+        The image button should have an attribute that stops the control from taking precedence over the list item
+-->
+
 </RelativeLayout>
+

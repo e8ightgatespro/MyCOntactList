@@ -108,11 +108,6 @@ public class ContactListActivity extends AppCompatActivity {
         });
     }
 
-    private void initBackArrowClick() {
-        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
-
-    }
-
     private void initListButton() {
         ImageButton ibList = (ImageButton) findViewById(R.id.ImageButtonList); //create a variable to hold the imageButton object
         ibList.setEnabled(false);
