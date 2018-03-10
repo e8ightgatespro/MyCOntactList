@@ -30,6 +30,8 @@ import java.util.List;
 public class ContactMapActivity extends AppCompatActivity {
     LocationManager locationManager;
     LocationListener gpsListener;
+    LocationListener networkListener;
+    Location currentBestLocation;
     final int PERMISSION_REQUEST_LOCATION = 101;
 
     @Override
@@ -50,11 +52,26 @@ public class ContactMapActivity extends AppCompatActivity {
         }
         try {
             locationManager.removeUpdates(gpsListener);
+            locationManager.removeUpdates(networkListener);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private boolean isBetterLocation(Location location) {
+        boolean isBetter = false;
+        if (currentBestLocation == null) {
+            isBetter = true;
+        }
+        else if (location.getAccuracy() <= currentBestLocation.getAccuracy()) {
+            isBetter = true;
+        }
+        else if (location.getTime() - currentBestLocation.getTime() > 5*60*1000) {
+            isBetter = true;
+        }
+        return isBetter;
+
+    }
 
     private void initGetLocationButton() {
         Button locationButton = findViewById(R.id.buttonGetLocation);
@@ -140,13 +157,44 @@ public class ContactMapActivity extends AppCompatActivity {
             gpsListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    TextView txtLatitude = findViewById(R.id.textLatitude);
-                    TextView txtLongitude = findViewById(R.id.textLongitude);
-                    TextView txtAccuracy = findViewById(R.id.textAccuracy);
+                    if(isBetterLocation(location)) {
+                        currentBestLocation = location;
+                        TextView txtLatitude = findViewById(R.id.textLatitude);
+                        TextView txtLongitude = findViewById(R.id.textLongitude);
+                        TextView txtAccuracy = findViewById(R.id.textAccuracy);
 
-                    txtLatitude.setText("Latitude: " + String.valueOf(location.getLatitude()));
-                    txtLongitude.setText("Longitude: " + String.valueOf(location.getLongitude()));
-                    txtAccuracy.setText("Accuracy: " + String.valueOf(location.getAccuracy()));
+                        txtLatitude.setText("Latitude: " + String.valueOf(location.getLatitude()));
+                        txtLongitude.setText("Longitude: " + String.valueOf(location.getLongitude()));
+                        txtAccuracy.setText("Accuracy: " + String.valueOf(location.getAccuracy()));
+                    }
+                }
+
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) {
+                }
+
+                @Override
+                public void onProviderEnabled(String s) {
+                }
+
+                @Override
+                public void onProviderDisabled(String s) {
+                }
+            };
+
+            networkListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    if (isBetterLocation(location)) {
+                        currentBestLocation = location;
+                        TextView txtLatitude = findViewById(R.id.textLatitude);
+                        TextView txtLongitude = findViewById(R.id.textLongitude);
+                        TextView txtAccuracy = findViewById(R.id.textAccuracy);
+
+                        txtLatitude.setText("Latitude: " + String.valueOf(location.getLatitude()));
+                        txtLongitude.setText("Longitude: " + String.valueOf(location.getLongitude()));
+                        txtAccuracy.setText("Accuracy: " + String.valueOf(location.getAccuracy()));
+                    }
                 }
 
                 @Override
@@ -163,6 +211,7 @@ public class ContactMapActivity extends AppCompatActivity {
             };
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,networkListener);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), "Error, location not available", Toast.LENGTH_LONG).show();
         }
