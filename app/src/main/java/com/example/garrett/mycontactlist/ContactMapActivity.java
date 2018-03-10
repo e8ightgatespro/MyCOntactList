@@ -83,13 +83,27 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
         initListButton();
         initMapButton();
         initSettingsButton();
+        initMapTypeButton();
 
     }
 
-
-
-
-
+    private void initMapTypeButton() {
+        final Button satellitebtn = findViewById(R.id.buttonMapType);
+        satellitebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentSetting = satellitebtn.getText().toString();
+                if (currentSetting.equalsIgnoreCase("Satellite View")) {
+                    gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                    satellitebtn.setText("Normal View");
+                }
+                else {
+                    gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                    satellitebtn.setText("Satellite View");
+                }
+            }
+        });
+    }
 
 
     private void initListButton() {
