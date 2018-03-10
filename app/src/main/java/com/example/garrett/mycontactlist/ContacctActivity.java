@@ -155,6 +155,12 @@ public class ContacctActivity extends AppCompatActivity implements DatePickerDia
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ContacctActivity.this, ContactMapActivity.class); // sets an intent that comes from ContactActivity, and sends
+                if(currentContact.getContactID() == -1 ) {
+                    Toast.makeText(getBaseContext(), "Contact must be saved before it ca be mapped", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    intent.putExtra("contactid", currentContact.getContactID());
+                }
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // the user to the ContactListActivity, and also clears any pre-existing version of that page
                 startActivity(intent); // executes the intent
             }

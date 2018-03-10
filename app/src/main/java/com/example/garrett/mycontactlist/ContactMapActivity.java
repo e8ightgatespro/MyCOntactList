@@ -2,9 +2,12 @@ package com.example.garrett.mycontactlist;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -19,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,11 +33,16 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, com.google.android.gms.location.LocationListener{
@@ -41,11 +50,28 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
     GoogleMap gMap;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
+    ArrayList<Contact> contacts = new ArrayList<>();
+    Contact currentContact = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_map);
+        Bundle extras = getIntent().getExtras();
+        try{
+            ContactDataSource ds = new ContactDataSource(ContactMapActivity.this);
+            ds.open();
+            if(extras != null) {
+                currentContact = ds.getSpecificContact(extras.getInt("contactid"));
+            }
+            else {
+                contacts = ds.getContacts("contactname", "ASC");
+            }
+            ds.close();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Contact(s) could not be retrieved.", Toast.LENGTH_LONG).show();
+        }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         createLocationRequest();
@@ -172,6 +198,71 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
         gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        Point size = new Point();
+        WindowManager w = getWindowManager();
+        w.getDefaultDisplay().getSize(size);
+        int measureWidth = size.x;
+        int measureHeight = size.y;
+
+        if(contacts.size() > 0) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (int i = 0; i<contacts.size(); i++) {
+                currentContact = contacts.get(i);
+                Geocoder geo = new Geocoder(this);
+                List<Address> addresses = null;
+
+                String address = currentContact.getStreetaddress() + ", " +
+                        currentContact.getCity() + ", " +
+                        currentContact.getState() + ", " +
+                        currentContact.getZipcode();
+                try {
+                    addresses = geo.getFromLocationName(address, 1);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                LatLng point = new LatLng(addresses.get(0).getLatitude(),addresses.get(0).getLongitude());
+                builder.include(point);
+
+                gMap.addMarker(new MarkerOptions().position(point).title(currentContact.getContactName()).snippet(address));
+            }
+            gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), measureWidth, measureHeight, 450));
+        }
+        else {
+            if (currentContact != null) {
+                Geocoder geo = new Geocoder(this);
+                List<Address> addresses = null;
+
+                String address = currentContact.getStreetaddress() + ", " +
+                        currentContact.getCity() + ", " +
+                        currentContact.getState() + ", " +
+                        currentContact.getZipcode();
+
+                try {
+                 addresses = geo.getFromLocationName(address, 1);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                LatLng point = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+
+                gMap.addMarker(new MarkerOptions().position(point).title(currentContact.getContactName()).snippet(address));
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 16));
+            }
+            else {
+                AlertDialog alertDialog = new AlertDialog.Builder(ContactMapActivity.this).create();
+                alertDialog.setTitle("No Data");
+                alertDialog.setMessage("No data is available for the mapping function");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+                alertDialog.show();
+            }
+        }
+
                 try {
                     if(Build.VERSION.SDK_INT >= 23) {
                         if(ContextCompat.checkSelfPermission(ContactMapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
