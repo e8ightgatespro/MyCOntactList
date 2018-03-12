@@ -37,8 +37,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -85,7 +87,11 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
         initSettingsButton();
         initMapTypeButton();
 
+
+
     }
+
+
 
     private void initMapTypeButton() {
         final Button satellitebtn = findViewById(R.id.buttonMapType);
@@ -212,6 +218,21 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
         gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            }
+        });
+
+        gMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                gMap.addMarker(new MarkerOptions().position(latLng).title("I'm Here"));
+            }
+        });
+
         Point size = new Point();
         WindowManager w = getWindowManager();
         w.getDefaultDisplay().getSize(size);
@@ -314,6 +335,12 @@ public class ContactMapActivity extends AppCompatActivity implements OnMapReadyC
     public void onLocationChanged(Location location) {
         Toast.makeText(getBaseContext(), "Lat: " + location.getLatitude() + " Long: " + location.getLongitude() + " Accuracy: " + location.getAccuracy(),Toast.LENGTH_LONG).show();
     }
+
+
+
+
+
+
 }
 
 
